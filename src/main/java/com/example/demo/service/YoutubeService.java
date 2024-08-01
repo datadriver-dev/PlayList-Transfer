@@ -1,15 +1,20 @@
 package com.example.demo.service;
 
+import java.net.URI;
 import java.net.URLEncoder;
+import java.net.http.HttpClient;
+import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
 import java.util.Map;
-
+import java.net.http.HttpRequest;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Service
 public class YoutubeService {
@@ -74,16 +79,84 @@ public class YoutubeService {
 
         ResponseEntity<Map> response = restTemplate.postForEntity(getTokenUrl(), request, Map.class);
 
-        // System.out.println(response);
-
         if (response.getStatusCode() == HttpStatus.OK) {
             Map<String, Object> responseBody = response.getBody();
             if (responseBody != null) {
                 setAccess_token((String) responseBody.get("access_token"));
             }
         } else {
-            // Handle error
             System.out.println("Error: " + response.getStatusCode());
         }
     }
-}
+
+    public String createPlaylist(String name) {
+        String playlistId = null;
+        HttpClient client = HttpClient.newHttpClient();
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        Map<String, Object> snippet = new HashMap<>();
+        snippet.put("title", name);
+
+        Map<String, Object> jsonInput = new HashMap<>();
+        jsonInput.put("snippet", snippet);
+
+        try {
+            String requestBody = objectMapper.writeValueAsString(jsonInput);
+
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(new URI("https://www.googleapis.com/youtube/v3/playlists?access_token=" + access_token + "&part=id,snippet"))
+                    .header("Content-Type", "application/json")
+                    .POST(HttpRequest.BodyPublishers.ofString(requestBody, StandardCharsets.UTF_8))
+                    .build();
+
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            String responseBody = response.body();
+            Map<String, Object> jsonResponse = objectMapper.readValue(responseBody, Map.class);
+            playlistId = (String) jsonResponse.get("id");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return playlistId;
+    }
+
+    public String getVideoID(String query) {
+        String videoId = null;
+        HttpClient client = HttpClient.newHttpClient();
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        try {
+            String encodedQuery = java.net.URLEncoder.encode(query, StandardCharsets.UTF_8);
+
+            URI uri = new URI("https://www.googleapis.com/youtube/v3/search?access_token=" + access_token + "&part=snippet&maxResults=1&q=" + encodedQuery + "&type=video");
+
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(uri)
+                    .header("Accept", "application/json")
+                    .GET()
+                    .build();
+
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            String responseBody = response.body();
+
+            Map<String, Object> jsonResponse = objectMapper.readValue(responseBody, Map.class);
+            var items = (java.util.List<Map<String, Object>>) jsonResponse.get("items");
+
+            if (items != null && !items.isEmpty()) {
+                var firstItem = (Map<String, Object>) items.get(0);
+                var id = (Map<String, Object>) firstItem.get("id");
+                videoId = (String) id.get("videoId");
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return videoId;
+    }
+
+    public void addTrack(String trackId) {
+
+    }
+} 

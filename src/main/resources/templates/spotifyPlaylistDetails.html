@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Spotify Playlist Details</title>
+    <script>
+        function selectAllTracks(source) {
+            checkboxes = document.getElementsByName('selectedTracks');
+            for (var i = 0, n = checkboxes.length; i < n; i++) {
+                checkboxes[i].checked = source.checked;
+            }
+        }
+    </script>
+</head>
+<body>
+    <h1>Spotify Playlist Details</h1>
+    <h1 th:text="${playlistName}"></h1>
+    <form method="post" th:action="@{/convert}">
+        <input type="hidden" name="playlistName" th:value="${playlistName}" />
+        <table>
+            <thead>
+                <tr>
+                    <th><input type="checkbox" onclick="selectAllTracks(this)" /> Select All</th>
+                    <th>Track Name</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="item : ${tracks.tracks.items}">
+                    <td><input type="checkbox" name="selectedTracks" th:value="${item.track.name}" /></td>
+                    <td th:text="${item.track.name}">Track Name</td>
+                </tr>
+            </tbody>
+        </table>
+        <button type="submit">Convert</button>
+    </form>
+</body>
+</html>

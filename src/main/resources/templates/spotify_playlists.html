@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Spotify Playlists</title>
+</head>
+<body>
+    <h1>Spotify Playlists</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Playlist Name</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="playlist : ${playlists['items']}">
+                <td th:text="${playlist['name']}"></td>
+                <td>
+                    <form th:action="@{/viewSpotifyPlaylist}" method="post">
+                        <input type="hidden" th:value="${playlist['id']}" name="playlistId"/>
+                        <input type="hidden" th:value="${playlist['name']}" name="playlistName"/>
+                        <button type="submit">View Playlist</button>
+                    </form>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>

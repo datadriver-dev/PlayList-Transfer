@@ -2,9 +2,6 @@ package com.example.demo.controller;
 
 import com.example.demo.service.SpotifyService;
 import com.example.demo.service.YoutubeService;
-
-import io.micrometer.core.ipc.http.HttpSender.Response;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,7 +18,7 @@ public class HomeController {
 
     @GetMapping("/")
     public String index() {
-        return "index";
+        return "youtubeLogin";
     }
 
     @GetMapping("/youtube_login")
@@ -40,9 +37,8 @@ public class HomeController {
             youtubeService.setCode(code);
             youtubeService.exchangeCodeForToken();
         }
-        System.out.println("Code :" + code);
-        System.out.println("Token : " + youtubeService.getAccess_token());
-        return "youtubelogged";
+        System.out.println("Youtube Token : " + youtubeService.getAccess_token());
+        return "spotifyLogin";
     }
 
     @GetMapping("/spotify_callback")
@@ -50,8 +46,8 @@ public class HomeController {
         if(code!=null) {
             spotifyService.setCode(code);
             spotifyService.exchangeCodeForToken();
-            // System.out.println(spotifyService.getAccess_token());
+            System.out.println("Spotify token :" + spotifyService.getAccess_token());
         }
-        return "youtubelogged";
+        return "redirect:http://localhost:8080/spotify_playlists";
     }
 }

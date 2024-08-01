@@ -1,11 +1,11 @@
 package com.example.demo.controller;
 
 import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.demo.service.SpotifyService;
@@ -17,16 +17,21 @@ public class SpotifyController {
     private SpotifyService spotifyService;
 
     @GetMapping("/spotify_playlists")
-    public ResponseEntity<Map<String, Object>> getPlaylists(
+    public String getPlaylists(
             @RequestParam(defaultValue = "20") int limit,
-            @RequestParam(defaultValue = "0") int offset) {
+            @RequestParam(defaultValue = "0") int offset, Model model) {
         Map<String, Object> playlists = spotifyService.getPlaylists(limit, offset);
 
-        Object items = playlists.get("items");
-        System.out.println();
+        model.addAttribute("playlists", playlists);
 
-        
-
-        return ResponseEntity.ok(playlists);
+        return "spotify_playlists";
+    }
+    
+    @PostMapping("/viewSpotifyPlaylist")
+    public String viewPlaylist(@RequestParam String playlistId, @RequestParam String playlistName, Model model) {
+        Map<String, Object> tracks = spotifyService.getTrackList(playlistId);
+        model.addAttribute("tracks", tracks);
+        model.addAttribute("playlistName", playlistName);
+        return "spotifyPlaylistDetails";
     }
 }

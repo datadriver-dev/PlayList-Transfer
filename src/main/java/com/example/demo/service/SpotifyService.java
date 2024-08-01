@@ -87,7 +87,6 @@ public class SpotifyService {
                 setAccess_token((String) responseBody.get("access_token"));
             }
         } else {
-            // Handle error
             System.out.println("Error: " + response.getStatusCode());
         }
     }
@@ -97,7 +96,7 @@ public class SpotifyService {
         HttpHeaders headers = new HttpHeaders();
         
         headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.setBearerAuth(access_token);  // Setting the Bearer token
+        headers.setBearerAuth(access_token);
 
         String url = "https://api.spotify.com/v1/me/playlists?limit=" + limit + "&offset=" + offset;
 
@@ -108,9 +107,31 @@ public class SpotifyService {
         if (response.getStatusCode() == HttpStatus.OK) {
             return response.getBody();
         } else {
-            // Handle error
             System.out.println("Error: " + response.getStatusCode());
             return null;
         }
     }
+
+    public Map<String, Object> getTrackList(String playlistId) {
+        RestTemplate restTemplate = new RestTemplate();
+        HttpHeaders headers = new HttpHeaders();
+        
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.setBearerAuth(access_token);
+
+        String url = "https://api.spotify.com/v1/playlists/" + playlistId + "?fields=tracks(items(track(name)))";
+
+        HttpEntity<String> entity = new HttpEntity<>(headers);
+
+        ResponseEntity<Map> response = restTemplate.exchange(url, HttpMethod.GET, entity, Map.class);
+
+        if (response.getStatusCode() == HttpStatus.OK) {
+            return response.getBody();
+        } else {
+            System.out.println("Error: " + response.getStatusCode());
+            return null;
+        }
+    }
+
+
 }
