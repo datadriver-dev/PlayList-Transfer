@@ -1,1 +1,12 @@
-<h1>Playlist Converted</h1>
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Playlist Converted</title>
+</head>
+<body>
+    <h1>Playlist Converted</h1>
+    <p>Your playlist has been successfully created. You can access it using the link below:</p>
+    <a th:href="${url}" target="_blank">View Playlist on YouTube</a>
+</body>
+</html>

@@ -7,7 +7,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
 import com.example.demo.service.SpotifyService;
 
 @Controller
@@ -32,6 +31,13 @@ public class SpotifyController {
         Map<String, Object> tracks = spotifyService.getTrackList(playlistId);
         model.addAttribute("tracks", tracks);
         model.addAttribute("playlistName", playlistName);
+
+        // 
+        Map<String, Object> m = (Map<String, Object>)tracks.get("tracks");
+
+        System.out.println("Tracks : " + m);
+        // 
+
         return "spotifyPlaylistDetails";
     }
 }

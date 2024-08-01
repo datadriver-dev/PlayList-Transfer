@@ -21,13 +21,18 @@
                 <tr>
                     <th><input type="checkbox" onclick="selectAllTracks(this)" /> Select All</th>
                     <th>Track Name</th>
+                    <th>Artist</th>
                 </tr>
             </thead>
             <tbody>
                 <tr th:each="item : ${tracks.tracks.items}">
-                    <td><input type="checkbox" name="selectedTracks" th:value="${item.track.name}" /></td>
+                    <td>
+                        <input type="checkbox" name="selectedTracks" th:value="${item.track.name}" />
+                        <input type="hidden" name="selectedArtists" th:value="${item.track.artists[0].name}" />
+                    </td>
                     <td th:text="${item.track.name}">Track Name</td>
-                </tr>
+                    <td th:text="${item.track.artists[0].name}">Artist</td>
+                </tr> 
             </tbody>
         </table>
         <button type="submit">Convert</button>

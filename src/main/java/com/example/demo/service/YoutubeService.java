@@ -156,7 +156,34 @@ public class YoutubeService {
         return videoId;
     }
 
-    public void addTrack(String trackId) {
+    public void addTrack(String trackId, String playListId) {
 
+        HttpClient client = HttpClient.newHttpClient();
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        Map<String, Object> resourceId = new HashMap<>();
+        resourceId.put("kind", "youtube#video");
+        resourceId.put("videoId", trackId);
+
+        Map<String, Object> snippet = new HashMap<>();
+        snippet.put("playlistId", playListId);
+        snippet.put("resourceId", resourceId);
+
+        Map<String, Object> jsonInput = new HashMap<>();
+        jsonInput.put("snippet", snippet);
+
+        try {
+            String requestBody = objectMapper.writeValueAsString(jsonInput);
+
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(new URI("https://www.googleapis.com/youtube/v3/playlistItems?access_token=" + access_token + "&part=contentDetails,id,snippet,status"))
+                    .header("Content-Type", "application/json")
+                    .POST(HttpRequest.BodyPublishers.ofString(requestBody, StandardCharsets.UTF_8))
+                    .build();
+
+            client.send(request, HttpResponse.BodyHandlers.ofString());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 } 

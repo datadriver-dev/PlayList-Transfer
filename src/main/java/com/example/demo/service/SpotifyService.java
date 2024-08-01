@@ -4,7 +4,6 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -119,7 +118,7 @@ public class SpotifyService {
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.setBearerAuth(access_token);
 
-        String url = "https://api.spotify.com/v1/playlists/" + playlistId + "?fields=tracks(items(track(name)))";
+        String url = "https://api.spotify.com/v1/playlists/" + playlistId + "?fields=tracks(items(track(name,artists)))";
 
         HttpEntity<String> entity = new HttpEntity<>(headers);
 
