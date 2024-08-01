@@ -37,7 +37,6 @@ public class HomeController {
             youtubeService.setCode(code);
             youtubeService.exchangeCodeForToken();
         }
-        System.out.println("Youtube Token : " + youtubeService.getAccess_token());
         return "spotifyLogin";
     }
 
@@ -46,7 +45,6 @@ public class HomeController {
         if(code!=null) {
             spotifyService.setCode(code);
             spotifyService.exchangeCodeForToken();
-            System.out.println("Spotify token :" + spotifyService.getAccess_token());
         }
         return "redirect:http://localhost:8080/spotify_playlists";
     }

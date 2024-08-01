@@ -31,13 +31,6 @@ public class SpotifyController {
         Map<String, Object> tracks = spotifyService.getTrackList(playlistId);
         model.addAttribute("tracks", tracks);
         model.addAttribute("playlistName", playlistName);
-
-        // 
-        Map<String, Object> m = (Map<String, Object>)tracks.get("tracks");
-
-        System.out.println("Tracks : " + m);
-        // 
-
         return "spotifyPlaylistDetails";
     }
 }

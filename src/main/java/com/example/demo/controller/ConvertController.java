@@ -12,7 +12,7 @@ import com.example.demo.service.YoutubeService;
 public class ConvertController {
 
     @Autowired
-    YoutubeService youtubeService;
+    private YoutubeService youtubeService;
 
     @PostMapping("/convert")
     public String convertTracks(@RequestParam List<String> selectedTracks, @RequestParam List<String> selectedArtists, @RequestParam String playlistName, Model model) {

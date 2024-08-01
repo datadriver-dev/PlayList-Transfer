@@ -78,8 +78,6 @@ public class SpotifyService {
 
         ResponseEntity<Map> response = restTemplate.postForEntity(getTokenUrl(), request, Map.class);
 
-        // System.out.println(response);
-
         if (response.getStatusCode() == HttpStatus.OK) {
             Map<String, Object> responseBody = response.getBody();
             if (responseBody != null) {
