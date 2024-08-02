@@ -33,7 +33,7 @@ public class HomeController {
 
     @GetMapping("/youtube_callback")
     public String youtube_callback(@RequestParam(required = false) String code) {
-        if(code!=null) {
+        if (code != null) {
             youtubeService.setCode(code);
             youtubeService.exchangeCodeForToken();
         }
@@ -42,7 +42,7 @@ public class HomeController {
 
     @GetMapping("/spotify_callback")
     public String spotify_callback(@RequestParam(required = false) String code) {
-        if(code!=null) {
+        if (code != null) {
             spotifyService.setCode(code);
             spotifyService.exchangeCodeForToken();
         }

@@ -15,14 +15,15 @@ public class ConvertController {
     private YoutubeService youtubeService;
 
     @PostMapping("/convert")
-    public String convertTracks(@RequestParam List<String> selectedTracks, @RequestParam List<String> selectedArtists, @RequestParam String playlistName, Model model) {
-        
+    public String convertTracks(@RequestParam List<String> selectedTracks, @RequestParam List<String> selectedArtists,
+            @RequestParam String playlistName, Model model) {
+
         String playListId = youtubeService.createPlaylist(playlistName);
 
         for (int i = 0; i < selectedTracks.size(); i++) {
             String track = selectedTracks.get(i);
             String artist = selectedArtists.get(i);
-            String trackId = youtubeService.getVideoID(artist + " " +track);
+            String trackId = youtubeService.getVideoID(artist + " " + track);
             youtubeService.addTrack(trackId, playListId);
         }
 
