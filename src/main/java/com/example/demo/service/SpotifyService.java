@@ -34,7 +34,7 @@ public class SpotifyService {
     private String response_type = "code";
     private String code;
     private String access_token;
-
+    
     public String getAccess_token() {
         return access_token;
     }
@@ -47,7 +47,7 @@ public class SpotifyService {
         this.access_token = access_token;
     }
 
-    public String getLoginUrl() {
+ public String getLoginUrl() {
         return "https://accounts.spotify.com/authorize?" +
                 "client_id=" + URLEncoder.encode(client_id, StandardCharsets.UTF_8) +
                 "&response_type=" + URLEncoder.encode(response_type, StandardCharsets.UTF_8) +
@@ -63,7 +63,7 @@ public class SpotifyService {
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-
+        
         String auth = client_id + ":" + client_secret;
         byte[] encodedAuth = Base64.getEncoder().encode(auth.getBytes());
         String authHeader = "Basic " + new String(encodedAuth);
@@ -91,7 +91,7 @@ public class SpotifyService {
     public Map<String, Object> getPlaylists(int limit, int offset) {
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
-
+        
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.setBearerAuth(access_token);
 
@@ -112,12 +112,11 @@ public class SpotifyService {
     public Map<String, Object> getTrackList(String playlistId) {
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
-
+        
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.setBearerAuth(access_token);
 
-        String url = "https://api.spotify.com/v1/playlists/" + playlistId
-                + "?fields=tracks(items(track(name,artists)))";
+        String url = "https://api.spotify.com/v1/playlists/" + playlistId + "?fields=tracks(items(track(name,artists)))";
 
         HttpEntity<String> entity = new HttpEntity<>(headers);
 
@@ -130,5 +129,6 @@ public class SpotifyService {
             return null;
         }
     }
+
 
 }

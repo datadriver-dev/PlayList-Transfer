@@ -11,7 +11,7 @@ import com.example.demo.service.SpotifyService;
 
 @Controller
 public class SpotifyController {
-
+    
     @Autowired
     private SpotifyService spotifyService;
 
@@ -25,7 +25,7 @@ public class SpotifyController {
 
         return "spotify_playlists";
     }
-
+    
     @PostMapping("/viewSpotifyPlaylist")
     public String viewPlaylist(@RequestParam String playlistId, @RequestParam String playlistName, Model model) {
         Map<String, Object> tracks = spotifyService.getTrackList(playlistId);
