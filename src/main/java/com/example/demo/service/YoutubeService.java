@@ -186,4 +186,22 @@ public class YoutubeService {
             e.printStackTrace();
         }
     }
+
+    public Map<String, Object> getPlayLists() {
+        String url = "https://www.googleapis.com/youtube/v3/playlists?access_token=" + access_token +"&mine=true&part=snippet&maxResults=50";
+        RestTemplate restTemplate = new RestTemplate();
+
+        ResponseEntity<Map> response = restTemplate.exchange(url, HttpMethod.GET, null, Map.class);
+
+        return response.getBody();
+    }
+
+    public Map<String, Object> getVideoLists(String playlistId) {
+        String url = "https://www.googleapis.com/youtube/v3/playlistItems?access_token=" + access_token + "&playlistId=" + playlistId + "&part=snippet&maxResults=50";
+        RestTemplate restTemplate = new RestTemplate();
+
+        ResponseEntity<Map> response = restTemplate.exchange(url, HttpMethod.GET, null, Map.class);
+
+        return response.getBody();
+    }
 } 

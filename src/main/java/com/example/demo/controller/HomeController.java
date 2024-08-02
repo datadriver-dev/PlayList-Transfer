@@ -45,7 +45,9 @@ public class HomeController {
         if(code!=null) {
             spotifyService.setCode(code);
             spotifyService.exchangeCodeForToken();
+            spotifyService.setCurrentUser();  
         }
-        return "redirect:http://localhost:8080/spotify_playlists";
+        // return "redirect:http://localhost:8080/spotify_playlists";
+        return "landing";
     }
 }

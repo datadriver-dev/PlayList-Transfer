@@ -23,6 +23,12 @@ public class SpotifyController {
 
         model.addAttribute("playlists", playlists);
 
+        String username = spotifyService.getDisplay_name();
+        model.addAttribute("username", username);
+
+        String image_url = spotifyService.getImage_url();
+        model.addAttribute("image_url", image_url);
+
         return "spotify_playlists";
     }
     
